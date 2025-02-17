@@ -26,7 +26,7 @@ services:
 
   database:
     image: mysql:8.0
-    container_name: symfony_mysql_v2
+    container_name: symfony_mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: FitnessRoot1234
