@@ -23,13 +23,13 @@ jobs:
       # 4. Construir y subir la imagen de Symfony
       - name: Construir y subir imagen Symfony (PHP)
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/symfony-backend:latest -f proyectoBack/docker_pi/php/Dockerfile .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/symfony-backend:latest -f proyectoBack/docker_pi/php/Dockerfile proyectoBack/
           docker push ${{ secrets.DOCKER_USERNAME }}/symfony-backend:latest
 
       # 5. Construir y subir la imagen de Nginx
       - name: Construir y subir imagen Nginx
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/symfony-nginx:latest -f proyectoBack/docker_pi/nginx.Dockerfile docker_pi/
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/symfony-nginx:latest -f proyectoBack/docker_pi/nginx.Dockerfile proyectoBack/
           docker push ${{ secrets.DOCKER_USERNAME }}/symfony-nginx:latest
 
   deploy:

@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql zip gd intl opcache
 
 # Configura el directorio de trabajo y copia el código
-WORKDIR /home/ubuntu
-COPY . .
+WORKDIR /var/www/html
+COPY ../../ .
 
 # Instala Composer y dependencias sin ejecutar auto-scripts
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
