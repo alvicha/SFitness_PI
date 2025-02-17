@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: master
-          fetch-depth: 0  # Asegura que todo el historial está disponible
+          fetch-depth: 0
 
       # 2. Verificar estructura del repositorio
       - name: Verificar estructura del repositorio
@@ -56,9 +56,9 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
-          source: ${{ github.workspace }}/compose.yml
+          source: ${{ github.workspace }}/proyectoBack/compose.yml
           target: ~/deploy/
-          strip_components: 1  # Asegura que el archivo llega correctamente
+          strip_components: 1
 
       # 4. Desplegar en servidor remoto
       - name: Desplegar en servidor remoto
