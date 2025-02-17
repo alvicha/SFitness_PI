@@ -1,0 +1,55 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Hacer checkout del código
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Paso 2: Configurar la clave SSH para la autenticación
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa ${{ secrets.AWS_IP_ADDRESS }} >> ~/.ssh/known_hosts
+
+      # Paso 3: Desplegar a la instancia  EC2 usando la clave SSH
+      - name: Deploy to AWS EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.AWS_SSH_USER }}@${{ secrets.AWS_IP_ADDRESS }} << 'EOF'
+            # Cambiar al directorio donde está la aplicación Symfony
+            cd ${{ secrets.APP_PATH }}
+
+            # Hacer pull de los últimos cambios desde el repositorio
+            git pull origin main
+            
+            # Instalar las dependencias de Composer
+            composer install --no-dev --optimize-autoloader
+            
+            # Establecer las variables de entorno para  la base de datos
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_NAME=${{ secrets.DB_NAME }}
+            export DB_USER=${{ secrets.DB_USER }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            
+            # Ejecutar las migraciones y otras tareas de Symfony
+            php bin/console doctrine:database:drop --force --env=prod
+            php bin/console doctrine:database:create --env=prod
+            php bin/console doctrine:migrations:migrate --no-interaction --env=prod
+            
+            # Limpiar el caché y precompilar los assets
+            php bin/console cache:clear --env=prod
+            php bin/console assets:install --env=prod
+            
+            # Reiniciar el servidor Apache para que tome los cambios
+            sudo systemctl restart apache2
+          EOF
