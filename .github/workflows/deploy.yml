@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.REMOTE_KEY }}
           source: proyectoBack/compose.yml
           target: ~/deploy/
-          strip_components: 3
+          strip_components: 1
 
       - name: Desplegar en servidor remoto
         uses: appleboy/ssh-action@master
