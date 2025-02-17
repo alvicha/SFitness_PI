@@ -75,7 +75,6 @@ jobs:
             docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/workspace/compose.yml down
             docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/workspace/compose.yml up -d --force-recreate
 
-      # 5. Crear base de datos y ejecutar migraciones
       - name: Crear la base de datos si no existe y ejecutar migraciones
         uses: appleboy/ssh-action@master
         with:
@@ -83,5 +82,5 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           script: |
-              docker exec symfony_app php bin/console doctrine:database:create --if-not-exists
-              docker exec symfony_app php bin/console doctrine:migrations:migrate --no-interaction
+            docker exec symfony_app php bin/console doctrine:database:create --if-not-exists
+            docker exec symfony_app php bin/console doctrine:migrations:migrate --no-interaction
