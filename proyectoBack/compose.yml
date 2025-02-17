@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  php:
+    image: alvicha/symfony-pi:latest
+    container_name: symfony_app
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html # Monta los archivos de tu proyecto
+    depends_on:
+      database:
+        condition: service_healthy
+
+  nginx:
+    image: alvicha/symfony-pi:latest
+    container_name: symfony_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html # Monta los archivos de tu proyecto
+    depends_on:
+      php:
+        condition: service_started
+      database:
+        condition: service_healthy
+
+  database:
+    image: mysql:8.0
+    container_name: symfony_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: tusDatos
+      MYSQL_DATABASE: tusDatos
+      MYSQL_USER: tusDatos
+      MYSQL_PASSWORD: tusDatos
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 3
+
+volumes:
+  db_data:
