@@ -17,7 +17,7 @@ services:
     container_name: symfony_nginx
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"  # Cambia el puerto 80 por 8080
     volumes:
       - .:/var/www/html
     depends_on:
