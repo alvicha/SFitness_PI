@@ -5,7 +5,7 @@ FROM php:8.2-fpm
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
-# Instalar paquetes necesarios
+# Instala paquetes necesarios
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -20,25 +20,18 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql zip gd intl opcache
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Configura el directorio de trabajo y copia el código
 WORKDIR /var/www/html
+COPY . .
 
-# Copiar el contenido de la carpeta proyectoBack al contenedor (esto incluirá composer.json)
-COPY . .  
+# Instala Composer y dependencias sin ejecutar auto-scripts
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
 
-# Verificar que composer.json se copió correctamente (para depuración)
-RUN ls -la /var/www/html
-
-# Instalar Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Instalar dependencias de Composer sin ejecutar auto-scripts
-RUN composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
-
-# Limpiar caché
+# Ejecuta cache:clear manualmente en entorno prod
 RUN php bin/console cache:clear --env=prod || true
 
-# Ajustar permisos
+# Ajusta permisos
 RUN chown -R www-data:www-data /var/www/html
 
 CMD ["php-fpm"]
