@@ -60,7 +60,7 @@ jobs:
           target: ~/deploy/
           strip_components: 3
 
-      # 4. Desplegar en un servidor remoto
+      # 4. Desplegar en el servidor remoto
       - name: Desplegar en servidor remoto
         uses: appleboy/ssh-action@master
         with:
