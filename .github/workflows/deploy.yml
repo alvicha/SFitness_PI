@@ -71,17 +71,17 @@ jobs:
             sudo chmod 666 /var/run/docker.sock
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
             
-            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/workspace/compose.yml pull
-            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/workspace/compose.yml down
-            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/workspace/compose.yml up -d --force-recreate
+            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/compose.yml pull
+            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/compose.yml down
+            docker-compose -f /home/${{ secrets.REMOTE_USER }}/deploy/compose.yml up -d --force-recreate
 
       # 5. Crear base de datos y ejecutar migraciones
-      - name: Crear la base de datos y ejecutar migraciones
+      - name: Crear la base de datos si no existe y ejecutar migraciones
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           script: |
-            docker exec symfony_app php bin/console doctrine:database:create --if-not-exists
-            docker exec symfony_app php bin/console doctrine:migrations:migrate --no-interaction
+              docker exec symfony_app php bin/console doctrine:database:create --if-not-exists
+              docker exec symfony_app php bin/console doctrine:migrations:migrate --no-interaction
