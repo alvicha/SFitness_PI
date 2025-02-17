@@ -19,7 +19,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./proyectoBack:/var/www/html
+      - .:/var/www/html
     depends_on:
       php:
         condition: service_started
