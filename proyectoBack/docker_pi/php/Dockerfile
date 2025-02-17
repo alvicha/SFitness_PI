@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql zip gd intl opcache
 
 # Configura el directorio de trabajo y copia el código
-WORKDIR /var/www/html
+WORKDIR /home/ubuntu/proyectoBack
 COPY . .
 
 # Instala Composer y dependencias sin ejecutar auto-scripts
