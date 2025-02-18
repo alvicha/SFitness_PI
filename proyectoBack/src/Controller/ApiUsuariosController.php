@@ -40,7 +40,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
 
 
     #[Route('/api/usuarios/login', methods: ['POST'], name: 'add_clase')]
-    public function addClas(Request $request, EntityManagerInterface $em): JsonResponse
+    public function iniciarSesion(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 

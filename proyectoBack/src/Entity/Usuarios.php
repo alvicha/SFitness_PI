@@ -302,9 +302,13 @@ class Usuarios
         return $this;
     }
 
-    public function encriptar(){
+    public function encriptar($entityManager){
+
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $entityManager->persist($this);
+        $entityManager->flush();
     }
+
     public function comprobar($password){
         $securePassword = password_hash($password, PASSWORD_DEFAULT);
         if ($securePassword === $this->password) {
