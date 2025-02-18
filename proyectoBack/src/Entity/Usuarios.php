@@ -69,12 +69,14 @@ class Usuarios
 
     public function __construct()
     {
+        $this->encriptar();
         $this->fecha_registro = new \DateTime();
         $this->progresos = new ArrayCollection();
         $this->clases = new ArrayCollection();
         $this->clases_apuntadas = new ArrayCollection();
         $this->notificaciones = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -299,5 +301,23 @@ class Usuarios
 
         return $this;
     }
+
+    public function encriptar(){
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+    }
+    public function comprobar($password){
+        $securePassword = password_hash($password, PASSWORD_DEFAULT);
+        if ($securePassword === $this->password) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
+
+
+
 
 }

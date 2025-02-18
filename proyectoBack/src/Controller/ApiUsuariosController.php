@@ -37,4 +37,24 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
     return new JsonResponse(['success' => 'Clase agregada al usuario'], Response::HTTP_OK);
 
 }
+
+
+    #[Route('/api/usuarios/login', methods: ['POST'], name: 'add_clase')]
+    public function addClaseUsuario(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $correo = $data['correo'];
+        $password = $data['password'];
+        $usuario = $em->getRepository(Usuario::class)->findOneBy(['correo' => $correo]);
+
+        if (!$usuario) {
+            return 'Usuario no encontrado';
+        }
+
+        $usuario->comprobar($password);
+        return new JsonResponse(['success' => 'datos correctos'], Response::HTTP_OK);
+    }
+
+
 }
