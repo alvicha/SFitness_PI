@@ -51,8 +51,10 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         if (!$usuario) {
             return 'Usuario no encontrado';
         }
-
+        $em->persist($usuario);
+        $em->flush($usuario);
         $usuario->comprobar($password);
+
         return new JsonResponse(['success' => 'datos correctos'], Response::HTTP_OK);
     }
 
