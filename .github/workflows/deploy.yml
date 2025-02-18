@@ -49,7 +49,7 @@ jobs:
           echo "Directorio actual: $(pwd)"
           ls -R
 
-      # 3. Transferir el archivo compose.yml al servidor remoto
+      # 3. Transferir el archivo compose.yml a servidor remoto
       - name: Transferir compose.yml al servidor remoto
         uses: appleboy/scp-action@master
         with:
