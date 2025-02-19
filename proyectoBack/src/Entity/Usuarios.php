@@ -69,7 +69,6 @@ class Usuarios
 
     public function __construct()
     {
-        $this->encriptar();
         $this->fecha_registro = new \DateTime();
         $this->progresos = new ArrayCollection();
         $this->clases = new ArrayCollection();
