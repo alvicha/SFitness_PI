@@ -58,28 +58,5 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         return new JsonResponse(['success' => 'datos correctos'], Response::HTTP_OK);
     }
 
-    #[Route('/api/usuarios/addUsuarios', methods: ['POST'], name: 'register_user')]
-    public function registrarUsuario(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['nombre'], $data['apellido'], $data['email'], $data['password'], $data['telefono'], $data['rol'])) {
-            return new JsonResponse(['error' => 'Datos incompletos'], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        $usuario = new Usuario();
-        echo 'weroihkjhwfi';
-        $usuario->setNombre($data['nombre']);
-        $usuario->setApellido($data['apellido']);
-        $usuario->setEmail($data['email']);
-        $usuario->setPassword($data['password']);
-        $usuario->encriptar();
-        $usuario->setTelefono($data['telefono']);
-        $usuario->setRol($data['rol']);
-
-        $em->persist($usuario);
-        $em->flush();
-
-        return new JsonResponse(['message' => 'Usuario registrado correctamente'], JsonResponse::HTTP_CREATED);
-    }
 }

@@ -7,7 +7,7 @@ use App\Repository\UsuariosRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use App\Entity\Clases;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsuariosRepository::class)]
@@ -132,7 +132,7 @@ class Usuarios
 
     public function setPassword(string $password): static
     {
-        $this->password = $password;
+        $this->password = $this->encriptar($password);
 
         return $this;
     }
@@ -169,7 +169,7 @@ class Usuarios
     public function setFechaRegistro(\DateTimeInterface $fecha_registro): static
     {
         $this->fecha_registro = (new \DateTime())->format('Y-m-d');
-
+        return true;
     }
 
     public function getFotoPerfil(): ?string
@@ -301,9 +301,10 @@ class Usuarios
         return $this;
     }
 
-    public function encriptar(){
+    public function encriptar($contraseña){
 
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $contraseña = password_hash($contraseña, PASSWORD_DEFAULT);
+        return $contraseña;
     }
 
     public function comprobar($password){
