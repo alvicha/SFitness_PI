@@ -68,18 +68,18 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         }
 
         $usuario = new Usuario();
+        echo 'weroihkjhwfi';
         $usuario->setNombre($data['nombre']);
         $usuario->setApellido($data['apellido']);
         $usuario->setEmail($data['email']);
-        $usuario->setPassword($data['password']));
+        $usuario->setPassword($data['password']);
         $usuario->encriptar();
         $usuario->setTelefono($data['telefono']);
         $usuario->setRol($data['rol']);
-        
+
         $em->persist($usuario);
         $em->flush();
 
         return new JsonResponse(['message' => 'Usuario registrado correctamente'], JsonResponse::HTTP_CREATED);
     }
-}
 }
