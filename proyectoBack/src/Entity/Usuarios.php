@@ -252,7 +252,7 @@ class Usuarios
         return $this->clases_apuntadas;
     }
 
-    
+
     public function addClasesApuntada(Clases $clasesApuntada): static
     {
         if (!$this->clases_apuntadas->contains($clasesApuntada)) {

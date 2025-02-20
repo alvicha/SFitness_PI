@@ -46,7 +46,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
 
         $correo = $data['correo'];
         $password = $data['password'];
-        $usuario = $em->getRepository(Usuario::class)->findOneBy(['correo' => $correo]);
+        $usuario = $em->getRepository(Usuarios::class)->findOneBy(['correo' => $correo]);
 
         if (!$usuario) {
             return 'Usuario no encontrado';
