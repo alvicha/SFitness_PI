@@ -66,4 +66,59 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
 
 
 
+    #[Route('/api/usuarios/fotoPerfil', methods: ['POST'])]
+    public function subirImagen(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+
+        if (!isset($data['imagen']) || !isset($data['id'])) {
+            return new JsonResponse(['error' => 'Faltan datos: imagen o id'], 400);
+        }
+
+        $base64String = $data['imagen'];
+        $usuarioId = $data['id'];
+
+        $imagenData = base64_decode($base64String);
+        if ($imagenData === false) {
+            return new JsonResponse(['error' => 'Formato de imagen inválido'], 400);
+        }
+
+
+        $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
+        if (!$usuario) {
+            return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
+        }
+
+
+        $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
+
+
+        if (!is_dir($carpetaImagenes)) {
+            mkdir($carpetaImagenes, 0777, true); // Crea la carpeta con permisos adecuados
+        }
+
+
+        $nombreArchivo = uniqid('img_', true) . '.png';
+        $rutaImagen = $carpetaImagenes . $nombreArchivo;
+
+
+        if (!file_put_contents($rutaImagen, $imagenData)) {
+            return new JsonResponse(['error' => 'No se pudo guardar la imagen'], 500);
+        }
+
+
+        $usuario->setFotoPerfil('/img/' . $nombreArchivo);
+
+        $em->persist($usuario);
+        $em->flush();
+
+
+        return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
+    }
+
+
+
+
+
 }

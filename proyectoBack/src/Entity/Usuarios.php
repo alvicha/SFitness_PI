@@ -312,6 +312,6 @@ class Usuarios
     {
         return password_verify($password, $this->password);
     }
-    
+
 
 }
