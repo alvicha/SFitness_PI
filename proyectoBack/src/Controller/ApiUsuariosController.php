@@ -49,7 +49,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         $usuario = $em->getRepository(Usuarios::class)->findOneBy(['correo' => $correo]);
 
         if (!$usuario) {
-            return 'Usuario no encontrado';
+            return 'Usuario no encontrado ';
         }
         $em->persist($usuario);
         $em->flush($usuario);
