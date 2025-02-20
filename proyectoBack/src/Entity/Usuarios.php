@@ -308,21 +308,10 @@ class Usuarios
         return $contraseña;
     }
 
-    public function comprobar($password){
-        $securePassword = password_hash($password, PASSWORD_DEFAULT);
-        if ($securePassword === $this->password) {
-            return true;
-        }else{
-            return false;
-        }
+    public function comprobar($password): bool
+    {
+        return password_verify($password, $this->password);
     }
-
-
-
-
-
-
     
-
 
 }

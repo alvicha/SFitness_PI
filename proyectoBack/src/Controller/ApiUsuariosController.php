@@ -44,19 +44,26 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
     {
         $data = json_decode($request->getContent(), true);
 
-        $correo = $data['correo'];
-        $password = $data['password'];
+        $correo = $data['correo'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!$correo || !$password) {
+            return new JsonResponse(['error' => 'Correo y contraseña son obligatorios'], Response::HTTP_BAD_REQUEST);
+        }
+
         $usuario = $em->getRepository(Usuarios::class)->findOneBy(['correo' => $correo]);
 
         if (!$usuario) {
-            return 'Usuario no encontrado ';
+            return new JsonResponse(['error' => 'Usuario no encontrado'], Response::HTTP_NOT_FOUND);
         }
-        $em->persist($usuario);
-        $em->flush($usuario);
-        $usuario->comprobar($password);
 
-        return new JsonResponse(['success' => 'datos correctos'], Response::HTTP_OK);
+        if (!$usuario->comprobar($password)) {
+            return new JsonResponse(['error' => 'Contraseña incorrecta'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return new JsonResponse(['success' => 'Datos correctos'], Response::HTTP_OK);
     }
+
 
 
 }
