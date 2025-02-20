@@ -34,32 +34,29 @@ class Clases
     private ?string $estado = null;
 
     #[ORM\ManyToOne(inversedBy: 'clases')]
-    private ?Usuarios $id_entrenador = null;
+    #[ORM\JoinColumn(name: "id_usuario_id", referencedColumnName: "id")]
+    private ?Usuarios $usuario = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ubicacion = null;
 
-    /**
-     * @var Collection<int, Usuarios>
-     */
     #[ORM\ManyToMany(targetEntity: Usuarios::class, inversedBy: 'clases_apuntadas')]
     private Collection $usuarios_apuntados;
 
     public function __construct()
     {
         $this->usuarios_apuntados = new ArrayCollection();
-
     }
 
+    // Getters y setters
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(string $id): static
+    public function setId(int $id): static
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -71,7 +68,6 @@ class Clases
     public function setNombre(string $nombre): static
     {
         $this->nombre = $nombre;
-
         return $this;
     }
 
@@ -83,7 +79,6 @@ class Clases
     public function setDescripcion(string $descripcion): static
     {
         $this->descripcion = $descripcion;
-
         return $this;
     }
 
@@ -95,7 +90,6 @@ class Clases
     public function setFecha(\DateTimeInterface $fecha): static
     {
         $this->fecha = $fecha;
-
         return $this;
     }
 
@@ -107,7 +101,6 @@ class Clases
     public function setCapacidad(?int $capacidad): static
     {
         $this->capacidad = $capacidad;
-
         return $this;
     }
 
@@ -119,19 +112,17 @@ class Clases
     public function setEstado(string $estado): static
     {
         $this->estado = $estado;
-
         return $this;
     }
 
-    public function getIdEntrenador(): ?Usuarios
+    public function getUsuario(): ?Usuarios
     {
-        return $this->id_entrenador;
+        return $this->usuario;
     }
 
-    public function setIdEntrenador(?Usuarios $id_entrenador): static
+    public function setUsuario(?Usuarios $usuario): static
     {
-        $this->id_entrenador = $id_entrenador;
-
+        $this->usuario = $usuario;
         return $this;
     }
 
@@ -143,13 +134,9 @@ class Clases
     public function setUbicacion(?string $ubicacion): static
     {
         $this->ubicacion = $ubicacion;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Usuarios>
-     */
     public function getUsuariosApuntados(): Collection
     {
         return $this->usuarios_apuntados;
@@ -167,16 +154,6 @@ class Clases
     public function removeUsuariosApuntado(Usuarios $usuariosApuntado): static
     {
         $this->usuarios_apuntados->removeElement($usuariosApuntado);
-
         return $this;
     }
-
-    public function addUsuario(Usuarios $usuario): void
-    {
-        if (!$this->usuarios_apuntados->contains($usuario)) {
-            $this->usuarios_apuntados[] = $usuario;
-        }
-    }
-
-
 }
