@@ -93,6 +93,19 @@ class Usuarios
         return $this;
     }
 
+    public function setFotoPerfil(?string $foto_perfil): static
+    {
+        $this->foto_perfil = $foto_perfil;
+        return $this;
+    }
+
+    public function getFotoPerfil(): ?string
+    {
+        return $this->foto_perfil;
+    }
+
+
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -149,7 +162,7 @@ class Usuarios
         return password_verify($password, $this->password);
     }
 
-    
+
 }
 
 
