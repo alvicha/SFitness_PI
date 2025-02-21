@@ -21,23 +21,23 @@ final class ApiUsuariosController extends AbstractController
         ]);
     }
     #[Route('/api/usuarios/addClase', methods: ['POST'], name: 'add_clase')]
-    public function addClaseUsuario(Request $request, EntityManagerInterface $em): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
+public function addClaseUsuario(Request $request, EntityManagerInterface $em): JsonResponse
+{
+    $data = json_decode($request->getContent(), true);
 
-        $usuarioId = $data['usuario_id'];
-        $claseId = $data['clase_id'];
-        $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
-        $clase = $em->getRepository(Clases::class)->find($claseId);
+    $usuarioId = $data['usuario_id'];
+    $claseId = $data['clase_id'];
+    $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
+    $clase = $em->getRepository(Clases::class)->find($claseId);
 
-        $usuario->addClasesApuntada($clase);
+    $usuario->addClasesApuntada($clase);
 
-        $em->persist($usuario);
-        $em->persist($clase);
-        $em->flush();
-        return new JsonResponse(['success' => 'Clase agregada al usuario'], Response::HTTP_OK);
+    $em->persist($usuario);
+    $em->persist($clase);
+    $em->flush();
+    return new JsonResponse(['success' => 'Clase agregada al usuario'], Response::HTTP_OK);
 
-    }
+}
 
 
     #[Route('/api/usuarios/login', methods: ['POST'], name: 'add_clase')]
@@ -117,6 +117,10 @@ final class ApiUsuariosController extends AbstractController
 
         return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
     }
-    
+
+
+
+
+
 
 }
