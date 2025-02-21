@@ -55,6 +55,17 @@ class Usuarios
         $this->clases_apuntadas = new ArrayCollection();
     }
 
+    public function getRol(): ?string
+    {
+        return $this->rol;
+    }
+
+    public function setRol(string $rol): static
+    {
+        $this->rol = $rol;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -129,5 +140,8 @@ class Usuarios
             $clase->removeUsuarioApuntado($this);
         }
         return $this;
+
     }
 }
+
+
