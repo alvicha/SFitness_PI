@@ -117,43 +117,6 @@ final class ApiUsuariosController extends AbstractController
 
         return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
     }
+    
 
-    #[Route('/api/usuarios/{id}', methods: ['PUT'], name: 'update_usuario')]
-    public function updateUsuario(int $id, Request $request, EntityManagerInterface $em): JsonResponse
-    {
-        $usuario = $em->getRepository(Usuarios::class)->find($id);
-
-        if (!$usuario) {
-            return new JsonResponse(['error' => 'Usuario no encontrado'], Response::HTTP_NOT_FOUND);
-        }
-
-        $data = json_decode($request->getContent(), true);
-
-        // Verificar que se envían datos válidos
-        if (!$data) {
-            return new JsonResponse(['error' => 'Datos inválidos'], Response::HTTP_BAD_REQUEST);
-        }
-
-        // Actualizar los campos del usuario (verifica que existen en la entidad)
-        if (isset($data['nombre'])) {
-            $usuario->setNombre($data['nombre']);
-        }
-        if (isset($data['apellido'])) {
-            $usuario->setApellido($data['apellido']);
-        }
-        if (isset($data['telefono'])) {
-            $usuario->setTelefono($data['telefono']);
-        }
-        if (isset($data['email'])) {
-            $usuario->setEmail($data['email']);
-        }
-        if (isset($data['password'])) {
-            $usuario->setPassword(password_hash($data['password'], PASSWORD_BCRYPT));
-        }
-
-        $em->persist($usuario);
-        $em->flush();
-
-        return new JsonResponse(['success' => 'Usuario actualizado correctamente'], Response::HTTP_OK);
-    }
 }
