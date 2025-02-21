@@ -110,6 +110,21 @@ class Usuarios
     {
         return $this->email;
     }
+// Getter para teléfono
+    public function getTelefono(): ?int
+    {
+        return $this->telefono;
+    }
+
+// Setter para teléfono
+    public function setTelefono(?int $telefono): static
+    {
+        $this->telefono = $telefono;
+        return $this;
+    }
+
+
+
 
     public function setEmail(string $email): static
     {
