@@ -52,7 +52,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
             return new JsonResponse(['error' => 'Correo y contraseña son obligatorios'], Response::HTTP_BAD_REQUEST);
         }
 
-        $usuario = $em->getRepository(Usuarios::class)->findOneBy(['correo' => $correo]);
+        $usuario = $em->getRepository(Usuarios::class)->findOneBy(['email' => $correo]);
 
         if (!$usuario) {
             return new JsonResponse(['error' => 'Usuario no encontrado'], Response::HTTP_NOT_FOUND);
