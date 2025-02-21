@@ -34,13 +34,14 @@ class Clases
     private ?string $estado = null;
 
     #[ORM\ManyToOne(inversedBy: 'clases')]
-    #[ORM\JoinColumn(name: "id_usuario_id", referencedColumnName: "id")]
-    private ?Usuarios $usuario = null;
+    #[ORM\JoinColumn(name: "id_entrenador_id", referencedColumnName: "id", nullable: false)]
+    private ?Usuarios $entrenador = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ubicacion = null;
 
     #[ORM\ManyToMany(targetEntity: Usuarios::class, inversedBy: 'clases_apuntadas')]
+    #[ORM\JoinTable(name: "clases_usuarios")]
     private Collection $usuarios_apuntados;
 
     public function __construct()
@@ -52,12 +53,6 @@ class Clases
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): static
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function getNombre(): ?string
@@ -115,14 +110,14 @@ class Clases
         return $this;
     }
 
-    public function getUsuario(): ?Usuarios
+    public function getEntrenador(): ?Usuarios
     {
-        return $this->usuario;
+        return $this->entrenador;
     }
 
-    public function setUsuario(?Usuarios $usuario): static
+    public function setEntrenador(?Usuarios $entrenador): static
     {
-        $this->usuario = $usuario;
+        $this->entrenador = $entrenador;
         return $this;
     }
 
@@ -142,18 +137,17 @@ class Clases
         return $this->usuarios_apuntados;
     }
 
-    public function addUsuariosApuntado(Usuarios $usuariosApuntado): static
+    public function addUsuarioApuntado(Usuarios $usuario): static
     {
-        if (!$this->usuarios_apuntados->contains($usuariosApuntado)) {
-            $this->usuarios_apuntados->add($usuariosApuntado);
+        if (!$this->usuarios_apuntados->contains($usuario)) {
+            $this->usuarios_apuntados->add($usuario);
         }
-
         return $this;
     }
 
-    public function removeUsuariosApuntado(Usuarios $usuariosApuntado): static
+    public function removeUsuarioApuntado(Usuarios $usuario): static
     {
-        $this->usuarios_apuntados->removeElement($usuariosApuntado);
+        $this->usuarios_apuntados->removeElement($usuario);
         return $this;
     }
 }

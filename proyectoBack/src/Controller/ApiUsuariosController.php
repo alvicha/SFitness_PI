@@ -120,7 +120,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
 
 
 
-    
+
 
 
 }
