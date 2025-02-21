@@ -142,6 +142,13 @@ class Usuarios
         return $this;
 
     }
+
+
+    public function comprobar($password)
+    {
+        return password_verify($password, $this->password);
+    }
+
 }
 
 
