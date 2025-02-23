@@ -8,7 +8,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./public/img:/var/www/html/public/img
-    #   - .:/var/www/html
+      - .:/var/www/html
     depends_on:
       database:
         condition: service_healthy
@@ -20,8 +20,8 @@ services:
     ports:
       - "80:80"  # Cambia el puerto 80 a 8080 en el host
     volumes:
-      # - .:/var/www/html
       - ./public/img:/var/www/html/public/img
+      - .:/var/www/html
     depends_on:
       php:
         condition: service_started
