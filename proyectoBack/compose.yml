@@ -20,7 +20,7 @@ services:
     ports:
       - "80:80"  # Cambia el puerto 80 a 8080 en el host
     volumes:
-      - .:/var/www/html
+      # - .:/var/www/html
       - ./public/img:/var/www/html/public/img
     depends_on:
       php:
