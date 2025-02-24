@@ -19,7 +19,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:ro
       - uploads_data:/var/www/html/public/img:ro
     depends_on:
       php:
