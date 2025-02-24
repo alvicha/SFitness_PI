@@ -18,14 +18,13 @@ services:
     container_name: symfony_nginx
     restart: always
     ports:
-      - "80:80"  # Cambia el puerto 80 a 8080 en el host
+      - "80:80" # Cambia el puerto 80 a 8080 en el host
     volumes:
       - ./public/img:/var/www/html/public/img
       - .:/var/www/html
     depends_on:
       php:
         condition: service_started
-    entrypoint: /bin/bash -c "chown -R www-data:www-data /var/www/html && chmod -R 775 /var/www/html && nginx -g 'daemon off;'"
 
   database:
     image: mysql:8.0
@@ -41,12 +40,12 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
       retries: 3
 
 volumes:
   db_data:
 
-# env_file:
-#   - .env
+    # env_file:
+    #   - .env
