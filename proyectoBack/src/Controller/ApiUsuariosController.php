@@ -92,7 +92,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         }
 
 
-        $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
+        $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/uploads/';
 
 
         if (!is_dir($carpetaImagenes)) {
