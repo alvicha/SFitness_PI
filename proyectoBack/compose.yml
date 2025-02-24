@@ -7,8 +7,7 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - ./public/img:/var/www/html/public/img
-      - .:/var/www/html
+      - data_img:/var/www/html/public/img
     depends_on:
       database:
         condition: service_healthy
@@ -18,10 +17,10 @@ services:
     container_name: symfony_nginx
     restart: always
     ports:
-      - "80:80" # Cambia el puerto 80 a 8080 en el host
+      - "80:80"
     volumes:
-      - ./public/img:/var/www/html/public/img
       - .:/var/www/html
+      - data_img:/var/www/html/public/img
     depends_on:
       php:
         condition: service_started
@@ -46,6 +45,4 @@ services:
 
 volumes:
   db_data:
-
-    # env_file:
-    #   - .env
+  data_img:
