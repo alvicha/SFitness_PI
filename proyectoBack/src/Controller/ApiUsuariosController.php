@@ -92,7 +92,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         }
 
 
-        $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/images/';
+        $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
 
 
         if (!is_dir($carpetaImagenes)) {
@@ -109,13 +109,13 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         }
 
 
-        $usuario->setFotoPerfil('/images/' . $nombreArchivo);
+        $usuario->setFotoPerfil('/img/' . $nombreArchivo);
 
         $em->persist($usuario);
         $em->flush();
 
 
-        return new JsonResponse(['ruta' => '/images/' . $nombreArchivo], 201);
+        return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
     }
 
 
