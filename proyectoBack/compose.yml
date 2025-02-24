@@ -22,7 +22,6 @@ services:
     volumes:
       - .:/var/www/html
       - data_img:/var/www/html/public/img
-      - ./public/img:/var/www/html/public/img  # <-- Asegurar que Nginx accede a la carpeta de imágenes
     depends_on:
       php:
         condition: service_started
