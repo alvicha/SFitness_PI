@@ -7,7 +7,7 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - uploads_data:/var/www/html/public/img
+      - uploads_data:/var/www/html/public/img:rw
     depends_on:
       database:
         condition: service_healthy
@@ -20,7 +20,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
-      - uploads_data:/var/www/html/public/img
+      - uploads_data:/var/www/html/public/img:ro
     depends_on:
       php:
         condition: service_started
@@ -46,3 +46,4 @@ services:
 volumes:
   db_data:
   uploads_data:
+   driver: local
