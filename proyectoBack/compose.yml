@@ -7,7 +7,7 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - uploads_data:/var/www/html/public/img  # Volumen compartido
+      - uploads_data:/var/www/html/public/img
     depends_on:
       database:
         condition: service_healthy
@@ -20,7 +20,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html
-      - uploads_data:/var/www/html/public/img  # Mismo volumen compartido
+      - uploads_data:/var/www/html/public/img
     depends_on:
       php:
         condition: service_started
