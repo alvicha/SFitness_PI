@@ -119,7 +119,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         $em->flush();
 
 
-        return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
+        return new JsonResponse(['ruta' => '/public/img/' . $nombreArchivo], 201);
     }
 
 }
