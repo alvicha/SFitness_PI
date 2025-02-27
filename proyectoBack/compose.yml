@@ -7,7 +7,7 @@ services:
     restart: always
     working_dir: /var/www/html
     volumes:
-      - uploads_data:/var/www/html/public/img:rw
+      - uploads_data:/var/www/html/public/img  # Volumen compartido para imágenes
     depends_on:
       database:
         condition: service_healthy
@@ -20,7 +20,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html:ro
-      - uploads_data:/var/www/html/public/img:ro
+      - uploads_data:/var/www/html/public/img  # Nginx ahora también ve las imágenes
     depends_on:
       php:
         condition: service_started

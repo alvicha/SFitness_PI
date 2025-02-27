@@ -95,6 +95,10 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
 
 
+        if (!is_dir($carpetaImagenes) && !mkdir($carpetaImagenes, 0775, true) && !is_dir($carpetaImagenes)) {
+            return new JsonResponse(['error' => 'No se pudo crear la carpeta de imágenes'], 500);
+        }
+
         if (!is_dir($carpetaImagenes)) {
             mkdir($carpetaImagenes, 0777, true); // Crea la carpeta con permisos adecuados
         }
@@ -117,10 +121,5 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
 
         return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
     }
-
-
-
-
-
 
 }
