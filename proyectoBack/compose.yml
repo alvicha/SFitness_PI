@@ -8,21 +8,21 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
-      - uploads_data:/var/www/html/public/img  # Volumen compartido correctamente
+      - uploads_data:/var/www/html/public/img:rw  # Volumen compartido correctamente
     depends_on:
       database:
         condition: service_healthy
 
   nginx:
-    image: alvicha/symfony-nginx:latest
+    image: ${{ secrets.DOCKER_USERNAME }}/symfony-nginx:latest
     container_name: symfony_nginx
     restart: always
     working_dir: /var/www/html
     ports:
       - "80:80"
     volumes:
-      - .:/var/www/html
-      - uploads_data:/var/www/html/public/img  # Nginx también usa el volumen compartido
+      - .:/var/www/html:ro
+      - uploads_data:/var/www/html/public/img:ro
     depends_on:
       php:
         condition: service_started
