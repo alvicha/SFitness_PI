@@ -72,7 +72,6 @@ final class ApiUsuariosController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-
         if (!isset($data['imagen']) || !isset($data['id'])) {
             return new JsonResponse(['error' => 'Faltan datos: imagen o id'], 400);
         }
@@ -85,16 +84,15 @@ final class ApiUsuariosController extends AbstractController
             return new JsonResponse(['error' => 'Formato de imagen inválido'], 400);
         }
 
-
         $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
         if (!$usuario) {
             return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
         }
 
-
+        // Ruta donde se guarda la imagen dentro del contenedor Symfony, que ahora es un volumen compartido
         $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
 
-
+        // Si la carpeta no existe, la creamos
         if (!is_dir($carpetaImagenes) && !mkdir($carpetaImagenes, 0775, true) && !is_dir($carpetaImagenes)) {
             return new JsonResponse(['error' => 'No se pudo crear la carpeta de imágenes'], 500);
         }
@@ -103,23 +101,19 @@ final class ApiUsuariosController extends AbstractController
             mkdir($carpetaImagenes, 0777, true); // Crea la carpeta con permisos adecuados
         }
 
-
+        // Nombre único para la imagen
         $nombreArchivo = uniqid('img_', true) . '.png';
         $rutaImagen = $carpetaImagenes . $nombreArchivo;
 
-
+        // Guardamos la imagen
         if (!file_put_contents($rutaImagen, $imagenData)) {
             return new JsonResponse(['error' => 'No se pudo guardar la imagen'], 500);
         }
 
-        // Copiar la imagen al contenedor Nginx
-        $copiarImagenCommand = "docker cp " . $rutaImagen . " symfony_nginx:/var/www/html/public/img/" . $nombreArchivo;
-        exec($copiarImagenCommand);
-
+        // Actualizar la ruta de la imagen en la base de datos
         $usuario->setFotoPerfil('/img/' . $nombreArchivo);
         $em->persist($usuario);
         $em->flush();
-
 
         return new JsonResponse(['ruta' => '/img/' . $nombreArchivo], 201);
     }
