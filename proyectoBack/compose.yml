@@ -8,13 +8,13 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html
-      - uploads_data:/var/www/html/public/img
+      - uploads_data:/var/www/html/public/img  # ✅ Volumen para imágenes
     depends_on:
       database:
         condition: service_healthy
 
   nginx:
-    image: ${{ secrets.DOCKER_USERNAME }}/symfony-nginx:latest
+    image: alvicha/symfony-nginx:latest
     container_name: symfony_nginx
     restart: always
     working_dir: /var/www/html
@@ -22,7 +22,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www/html:ro
-      - uploads_data:/var/www/html/public/img
+      - uploads_data:/var/www/html/public/img  # ✅ Asegurar que Nginx accede a las imágenes
     depends_on:
       php:
         condition: service_started
@@ -48,4 +48,4 @@ services:
 volumes:
   db_data:
   uploads_data:
-   driver: local
+    driver: local  # 🔥 CORREGIDO

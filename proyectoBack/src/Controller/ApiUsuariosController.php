@@ -113,7 +113,7 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
         }
 
 
-        $usuario->setFotoPerfil('/public/img/' . $nombreArchivo);
+        $usuario->setFotoPerfil('/img/' . $nombreArchivo);
 
         $em->persist($usuario);
         $em->flush();
