@@ -21,23 +21,23 @@ final class ApiUsuariosController extends AbstractController
         ]);
     }
     #[Route('/api/usuarios/addClase', methods: ['POST'], name: 'add_clase')]
-public function addClaseUsuario(Request $request, EntityManagerInterface $em): JsonResponse
-{
-    $data = json_decode($request->getContent(), true);
+    public function addClaseUsuario(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
 
-    $usuarioId = $data['usuario_id'];
-    $claseId = $data['clase_id'];
-    $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
-    $clase = $em->getRepository(Clases::class)->find($claseId);
+        $usuarioId = $data['usuario_id'];
+        $claseId = $data['clase_id'];
+        $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
+        $clase = $em->getRepository(Clases::class)->find($claseId);
 
-    $usuario->addClasesApuntada($clase);
+        $usuario->addClasesApuntada($clase);
 
-    $em->persist($usuario);
-    $em->persist($clase);
-    $em->flush();
-    return new JsonResponse(['success' => 'Clase agregada al usuario'], Response::HTTP_OK);
+        $em->persist($usuario);
+        $em->persist($clase);
+        $em->flush();
+        return new JsonResponse(['success' => 'Clase agregada al usuario'], Response::HTTP_OK);
 
-}
+    }
 
 
     #[Route('/api/usuarios/login', methods: ['POST'], name: 'add_clase')]
@@ -112,9 +112,11 @@ public function addClaseUsuario(Request $request, EntityManagerInterface $em): J
             return new JsonResponse(['error' => 'No se pudo guardar la imagen'], 500);
         }
 
+        // Copiar la imagen al contenedor Nginx
+        $copiarImagenCommand = "docker cp " . $rutaImagen . " symfony_nginx:/var/www/html/public/img/" . $nombreArchivo;
+        exec($copiarImagenCommand);
 
         $usuario->setFotoPerfil('/img/' . $nombreArchivo);
-
         $em->persist($usuario);
         $em->flush();
 
