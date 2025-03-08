@@ -89,7 +89,7 @@ final class ApiUsuariosController extends AbstractController
             return new JsonResponse(['error' => 'Usuario no encontrado'], 404);
         }
 
-        // Ruta donde se guarda la imagen dentro del contenedor Symfony, que ahora es un volumen compartido
+        // Ruta donde se guarda la imagen
         $carpetaImagenes = $this->getParameter('kernel.project_dir') . '/public/img/';
 
         // Si la carpeta no existe, la creamos
@@ -97,16 +97,11 @@ final class ApiUsuariosController extends AbstractController
             return new JsonResponse(['error' => 'No se pudo crear la carpeta de imágenes'], 500);
         }
 
-        if (!is_dir($carpetaImagenes)) {
-            mkdir($carpetaImagenes, 0777, true); // Crea la carpeta con permisos adecuados
-        }
-
         // Nombre único para la imagen
         $nombreArchivo = uniqid('img_', true) . '.png';
-        $rutaImagen = $carpetaImagenes . $nombreArchivo;
 
         // Guardamos la imagen
-        if (!file_put_contents($rutaImagen, $imagenData)) {
+        if (!file_put_contents($carpetaImagenes . $nombreArchivo, $imagenData)) {
             return new JsonResponse(['error' => 'No se pudo guardar la imagen'], 500);
         }
 
